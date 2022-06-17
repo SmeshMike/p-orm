@@ -100,7 +100,7 @@ yourScriptModel = models['user']
 
 ```
 
-Using this modules you can make fings easily
+Using this modules you can make things easily
 
 ```js
  {PgConnecter, PgObj, compileModelsByScripts, pgUtils} = require("porm")
