@@ -46,10 +46,10 @@ function createModel(scriptsPath) {
     if (postgreType) {
       let name = row.split(" ")[0];
       model[name] = typeMap[postgreType];
-    }
-  }
+    };
+  };
   return model;
-}
+};
 
 /**
  * Create array of db table models based on table creation script.
@@ -66,14 +66,14 @@ function compileModelsByScripts(scriptsPath) {
       path.resolve(scriptsPath, filename),
       "utf-8"
     );
-  }
+  };
 
   let models = {};
   for (let filename in files) {
     models[`${filename.slice(0, -4)}`] = createModel(files[filename]);
-  }
+  };
 
   return models;
-}
+};
 
 module.exports = compileModelsByScripts;

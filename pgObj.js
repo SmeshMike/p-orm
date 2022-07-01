@@ -28,7 +28,7 @@ class PgObj {
     this._pgConnecter = connecter;
     this.model = model;
     return this;
-  }
+  };
 
   /**
    * Starts select request.
@@ -37,7 +37,7 @@ class PgObj {
    */
   select(...fields) {
     return new PgRequest(this.tableName, this._pgConnecter).select(fields);
-  }
+  };
 
   /**
    * Starts update request.
@@ -46,7 +46,7 @@ class PgObj {
    */
   update(fields) {
     return new PgRequest(this.tableName, this._pgConnecter).update(fields);
-  }
+  };
 
   /**
    * Starts insert request.
@@ -55,7 +55,7 @@ class PgObj {
    */
   insert(fields) {
     return new PgRequest(this.tableName, this._pgConnecter).insert(fields);
-  }
+  };
 
   /**
    * Starts delete request.
@@ -63,7 +63,7 @@ class PgObj {
    */
   delete() {
     return new PgRequest(this.tableName, this._pgConnecter).delete();
-  }
-}
+  };
+};
 
 module.exports = PgObj;
