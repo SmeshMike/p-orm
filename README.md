@@ -77,7 +77,7 @@ yourScriptModel = models["user"];
 //yourScriptModel - {another_id: null, creationScript: theWholeScriptText, eyes_nubmer:2, mode:'unauthorized'}
 ```
 
-Using this modules you can make things easily
+Using this modules you can make fings easily
 
 ```js
  {PgConnecter, PgObj, compileModelsByScripts, PgUtils} = require("porm")
