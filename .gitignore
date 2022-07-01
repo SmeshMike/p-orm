@@ -105,3 +105,6 @@ dist
 
 # Test files
 test.js
+
+# Package lock
+package-lock.json
