@@ -36,7 +36,7 @@ now we don't have implementation of DB interfaces, so we use [pg-promise](https:
   };
 
   const db = pgp(pgconnection);
-tableObj = new PgObj("table", pgConnecter, tableModel);
+tableObj = new PgObj("table", db, tableModel);
 ```
 
 That might be clear. But what is model in parameters? Model is a dictionary where keys are the names of columns of real table and values are their types converted to Node.js types.
@@ -56,10 +56,10 @@ Imagine that you have a file with sql script like this in `./scripts` directory:
 ```SQL
 CREATE TABLE IF NOT EXISTS public.user
 (
-	id SERIAL,
+  	id SERIAL,
     another_id integer NOT NULL,
-	mode VARCHAR DEFAULT 'unauthorized',
-	eyes_nubmer integer DEFAULT 2,
+	  mode VARCHAR DEFAULT 'unauthorized',
+	  eyes_nubmer integer DEFAULT 2,
     CONSTRAINT users_pkey PRIMARY KEY (id),
     CONSTRAINT users_user_id_key UNIQUE (user_id, bot_instance)
 );
@@ -77,21 +77,20 @@ yourScriptModel = models["user"];
 //yourScriptModel - {another_id: null, creationScript: theWholeScriptText, eyes_nubmer:2, mode:'unauthorized'}
 ```
 
-Using this modules you can make fings easily
+Using this modules you can make things easily
 
 ```js
- {PgConnecter, PgObj, compileModelsByScripts, PgUtils} = require("porm")
+ { PgObj, compileModelsByScripts, PgUtils} = require("porm")
 
  models = compileModelsByScripts('./scripts')
 
- let pgConnecter = new PgConnecter()
  const connectionStr = 'postgres://john:pass123@localhost:5432/products'
- await pgConnecter.connect(connectionStr);
+ const db = pgp(connectionStr);
 
  let userModel = models['user']
 
 
- User = new PgObj('user', pgConnecter, userModel)
+ User = new PgObj('user', db, userModel)
 ```
 
 ### PgUtils
