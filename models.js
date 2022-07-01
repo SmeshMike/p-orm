@@ -1,41 +1,55 @@
-const fs = require('fs');
-const path = require('path')
+const fs = require("fs");
+const path = require("path");
 
-const types = ["INT","INTEGER", "VARCHAR", "DATE", "TIME"]
+const typeMap = {
+  VARCHAR: String,
+  "CHARACTER VARYING": String,
+  CHARACTER: String,
+  CHAR: String,
+  TEXT: String,
+  SMALLINT: Number,
+  INTEGER: Number,
+  BIGINT: Number,
+  DECIMAL: Number,
+  NUMERIC: Number,
+  REAL: Number,
+  "DOUBLE PRECISION": Number,
+  SMALLSERIAL: Number,
+  SERIAL: Number,
+  BIGSERIAL: Number,
+  TIMESTAMP: Date,
+  TIME: Date,
+  TIME: Date,
+  INTERVAL: Date,
+  BOOLEAN: Boolean,
+};
 
 /**
  * Create db table model based on table creation script.
  * Model cosists of name of column(key) and default value(value).
  * @param {String} scriptsPath - path to direcory with *.sql files.
  * @return {Object} model.
-*/
-function createModel(scriptsPath){
-    let model = {'creationScript': scriptsPath};
-    let regexprow = /\(([^)]+)\)/;
-    let rows = scriptsPath.match(regexprow)[0];
-    rows = rows.split(',');
-    rows = rows.map(row => row.replace(/[()]/g, "").trim('\n','\t','\s'))
-      
-   for(let row in rows){
-       let rowElements = rows[row].split(' ');
-        if(rowElements.find(elem => types.includes(elem.toUpperCase())))
-        {
-            let defPos = Object.keys(rowElements).find(key => rowElements[key].toUpperCase() === "DEFAULT");
-            if(defPos)
-                if(rowElements.find(elem => elem.toUpperCase() === "INTEGER" || elem.toUpperCase() === "INT"))
-                    model[rowElements[0]] = parseInt(rowElements[parseInt(defPos)+1]);
-                else if(rowElements.find(elem => elem.toUpperCase() === 'VARCHAR'))
-                    model[rowElements[0]] = rowElements[parseInt(defPos)+1].replace(/\'/g, "");
-                else
-                    model[rowElements[0]] = null;
-            else
-                model[rowElements[0]] = null;
-        }
-            
-    }
-    return model;
-}
+ */
+function createModel(scriptsPath) {
+  // let model = {'creationScript': scriptsPath};
+  let model = {};
+  let regexprow = /\((?:[^)(]+|\((?:[^)(]+|\([^)(]*\))*\))*\)/;
+  let rows = scriptsPath.match(regexprow)[0];
+  rows = rows.split(",");
+  rows = rows.map((row) => row.replace(/[()]/g, "").trim("\n", "\t", "s"));
+  kek = Object.values(rows);
+  for (let row of rows) {
+    postgreType = Object.keys(typeMap).find((v) =>
+      row.toUpperCase().includes(v)
+    );
 
+    if (postgreType) {
+      let name = row.split(" ")[0];
+      model[name] = typeMap[postgreType];
+    }
+  }
+  return model;
+}
 
 /**
  * Create array of db table models based on table creation script.
@@ -43,21 +57,23 @@ function createModel(scriptsPath){
  * Model names will be created by name of script files.
  * @param {String} scriptsPath - path to direcory with *.sql files.
  * @return {Array[Object]} array of models.
-*/
-function compileModelsByScripts(scriptsPath){
-    let files = {};
+ */
+function compileModelsByScripts(scriptsPath) {
+  let files = {};
 
-    for(let filename of fs.readdirSync(scriptsPath))
-    {
-        files[filename] = fs.readFileSync(path.resolve(scriptsPath,filename),'utf-8');
-    }
+  for (let filename of fs.readdirSync(scriptsPath)) {
+    files[filename] = fs.readFileSync(
+      path.resolve(scriptsPath, filename),
+      "utf-8"
+    );
+  }
 
-    let models = {}
-    for(let filename in files){
-        models[`${filename.slice(0, -4)}`] = createModel(files[filename]);
-    }
+  let models = {};
+  for (let filename in files) {
+    models[`${filename.slice(0, -4)}`] = createModel(files[filename]);
+  }
 
-    return models
+  return models;
 }
 
 module.exports = compileModelsByScripts;

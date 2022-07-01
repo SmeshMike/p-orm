@@ -1,6 +1,5 @@
-const PgConnecter = require("./pgconnecter.js");
-const PgObj = require("./pgObj.js")
-const compileModelsByScripts  = require("./models.js");
-const pgUtils = require("./pgUtils.js")
+const PgObj = require("./pgObj.js");
+const compileModelsByScripts = require("./models.js");
+const PgUtils = require("./pgUtils.js");
 
-module.exports = {PgConnecter, PgObj, compileModelsByScripts, pgUtils}
+module.exports = { PgObj, compileModelsByScripts, PgUtils };

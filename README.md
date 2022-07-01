@@ -1,79 +1,57 @@
 # porm
-Node js ORM for PostgreSQL database. The whole perpose of that package is to make sql requests easier to write with JS, 
-to create "SELECT someStaff FROM staffWareHouse" by writing 
+
+Node js ORM for PostgreSQL database. The whole perpose of that package is to make sql requests easier to write with JS,
+to create "SELECT someStaff FROM staffWareHouse" by writing
+
 ```js
- staffWareHouse.select('someStaff')
-``` 
+staffWareHouse.select("someStaff");
+```
+
 etc.
 
 ## How to use it?
 
-So what do we have? 
+So what do we have?
 
 ```js
-{PgConnecter, PgObj, compileModelsByScripts, pgUtils} = require("porm")
+{PgObj, compileModelsByScripts, PgUtils} = require("porm")
 ```
 
-Lets understand what is that and how to use it.
-
-### PgConnecter
-
-PgConnecter is a class that will help you to create connection with your Postgres DataBase. 
-```js
- let pgConnecter = new PgConnecter()
- await pgConnecter.connect(connectionParameters);
-```
-
-You can use declare ```connectionParameters``` in several ways:
-
-With configuration object 
-```js
-const connectionObj = {
-    host: 'localhost',
-    port: 5432,
-    database: 'my-database-name',
-    user: 'user-name',
-    password: 'user-password',
-    max: 30
-
-await pgConnecter.connect(connectionObj);
-```
-
-or with connection string 
-
-```js
-const connectionStr = 'postgres://john:pass123@localhost:5432/products'
-
-await pgConnecter.connect(connectionStr);
-```
-You will need it later, to execute your requests to database
-This class exists only because of [pg-promise](https://github.com/vitaly-t/pg-promise), so  lets say thanks to it creator and visit 
-his repo for more information.
+Lets understand what is that and how it works.
 
 ### PgObj
 
-PgObj is a class that implements table object. To creater it you will need name of able in your database, db connecter(pgConnecter) and model of your table
+PgObj is a class that implements table object. To create it you will need a name of table in your database, db connecter(pgConnecter) and model of your table
+
+now we don't have implementation of DB interfaces, so we use [pg-promise](https://github.com/vitaly-t/pg-promise). Btw, thanx to it's author.
 
 ```js
+  let pgconnection = {
+    host: "localhost",
+    user: "postgres",
+    database: "BotDb",
+    password: "123",
+    port: 5432,
+    connectionTimeoutMillis: 20000,
+  };
 
-await pgConnecter.connect(connectionStr);
-tableObj = new PgObj('table', pgConnecter, tableModel)
-
+  const db = pgp(pgconnection);
+tableObj = new PgObj("table", pgConnecter, tableModel);
 ```
 
-That might be clear. But what is model in parameters? Model is dictionary where keys are the names of columns and values are their default values.
+That might be clear. But what is model in parameters? Model is a dictionary where keys are the names of columns of real table and values are their types converted to Node.js types.
 For example:
 
 ```js
-  let userModel = {id: null, gender: null, isHeOrSheAwesome: true}
+let userModel = { id: Number, gender: String, isHeOrSheAwesome: Boolean };
 ```
 
 ### compileModelsByScripts
 
-Another way to create model is to create it by table creation script.
-Here ```compileModelsByScripts()``` goes.
+Another way to create model is to use table creation script.
+Here `compileModelsByScripts()` goes.
 
-Imgine that you have a file with sql script like this in ```./scripts``` directory:
+Imagine that you have a file with sql script like this in `./scripts` directory:
 
 ```SQL
 CREATE TABLE IF NOT EXISTS public.user
@@ -90,20 +68,19 @@ CREATE TABLE IF NOT EXISTS public.user
 than if you write
 
 ```js
-models = compileModelsByScripts('./scripts')
+models = compileModelsByScripts("./scripts");
 
 //model - {user : {model}}
 
-yourScriptModel = models['user']
+yourScriptModel = models["user"];
 
 //yourScriptModel - {another_id: null, creationScript: theWholeScriptText, eyes_nubmer:2, mode:'unauthorized'}
-
 ```
 
 Using this modules you can make fings easily
 
 ```js
- {PgConnecter, PgObj, compileModelsByScripts, pgUtils} = require("porm")
+ {PgConnecter, PgObj, compileModelsByScripts, PgUtils} = require("porm")
 
  models = compileModelsByScripts('./scripts')
 
@@ -123,10 +100,12 @@ PgUtils is a class to add SQL functions to your code
 For examle
 
 ```js
- Users.select(PgUtils.count('another_id')).where(Users.eyes_nubmer.eq(2)).toStr()
- //returns: SELECT * FROM users WHERE users.eyes_nubmer=2;
- Users.select(PgUtils.count('another_id')).where(Users.eyes_nubmer.eq(2)).exec()
- //executes this request
+Users.select(PgUtils.count("another_id"))
+  .where(Users.eyes_nubmer.eq(2))
+  .toStr();
+//returns: SELECT * FROM users WHERE users.eyes_nubmer=2;
+Users.select(PgUtils.count("another_id")).where(Users.eyes_nubmer.eq(2)).exec();
+//executes this request
 ```
 
 To see more functions check PgUtils file. Good luck!
