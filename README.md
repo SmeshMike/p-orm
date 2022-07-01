@@ -108,3 +108,4 @@ Users.select(PgUtils.count("another_id")).where(Users.eyes_nubmer.eq(2)).exec();
 ```
 
 To see more functions check PgUtils file. Good luck!
+And you can see an [example](https://github.com/SmeshMike/porm/wiki#here-you-can-check-example-how-to-use-package)
