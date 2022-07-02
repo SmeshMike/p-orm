@@ -132,5 +132,5 @@ Glob.select()
 //executes this request
 ```
 
-To see more functions check PgUtils file. Good luck!
-And you can see an [example](https://github.com/SmeshMike/postorm/wiki#here-you-can-check-example-how-to-use-package)
+To find more functions check PgUtils file. Good luck!
+And you check an [example](https://github.com/SmeshMike/postorm/wiki#here-you-can-check-example-how-to-use-package)
