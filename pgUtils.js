@@ -7,8 +7,8 @@
  * @return {String}  return wrapped values
  */
 function count(...values) {
-  return `${values.map((x) => `COUNT(${x})`).join(", ")} `;
-}
+  return `${values.map((x) => `COUNT(${prepareIfPgColumnObj(x)})`).join(", ")} `;
+};
 
 /**
  * Returns wrapped values into MAX()
@@ -16,8 +16,8 @@ function count(...values) {
  * @return {String}  return wrapped values
  */
 function max(...values) {
-  return `${values.map((x) => `MAX(${x})`).join(", ")} `;
-}
+  return `${values.map((x) => `MAX(${prepareIfPgColumnObj(x)})`).join(", ")} `;
+};
 
 /**
  * Returns wrapped values into MIN()
@@ -25,8 +25,8 @@ function max(...values) {
  * @return {String}  return wrapped values
  */
 function min(...values) {
-  return `${values.map((x) => `MIN(${x})`).join(", ")} `;
-}
+  return `${values.map((x) => `MIN(${prepareIfPgColumnObj(x)})`).join(", ")} `;
+};
 
 /**
  * Returns wrapped values into AVG()
@@ -34,8 +34,8 @@ function min(...values) {
  * @return {String}  return wrapped values
  */
 function avg(...values) {
-  return `${values.map((x) => `AVG(${x})`).join(", ")} `;
-}
+  return `${values.map((x) => `AVG(${prepareIfPgColumnObj(x)})`).join(", ")} `;
+};
 
 /**
  * Returns wrapped values into SUM()
@@ -43,8 +43,8 @@ function avg(...values) {
  * @return {String}  return wrapped values
  */
 function sum(...values) {
-  return `${values.map((x) => `SUM(${x})`).join(", ")} `;
-}
+  return `${values.map((x) => `SUM(${prepareIfPgColumnObj(x)})`).join(", ")} `;
+};
 
 /**
  * Returns wrapped values into DISTINCT()
@@ -52,8 +52,8 @@ function sum(...values) {
  * @return {String}  return wrapped values
  */
 function distinct(...values) {
-  return `${values.map((x) => `DISTINCT ${x}`).join(", ")} `;
-}
+  return `${values.map((x) => `DISTINCT ${prepareIfPgColumnObj(x)}`).join(", ")} `;
+};
 
 /**
  * Auxillary function for date part convertion into SQL format
@@ -64,7 +64,11 @@ function twoDigits(d) {
   if (0 <= d && d < 10) return "0" + d.toString();
   if (-10 < d && d < 0) return "-0" + (-1 * d).toString();
   return d.toString();
-}
+};
+
+function prepareIfPgColumnObj(value) {
+  return typeof value !== "string" ? value.value : value;
+};
 
 /**
  * Converts this date into SQL format

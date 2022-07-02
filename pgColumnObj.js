@@ -20,7 +20,7 @@ class PgColumnObj {
     this.value = value;
     this.type = typeof type();
     return this;
-  }
+  };
 
   /**
    * Returns "less than" expression with this string and value
@@ -109,7 +109,7 @@ class PgColumnObj {
 function isTypeOf(a, bType) {
   let aType = typeof a;
   if (aType !== bType) throw TypeError(`${aType} is not equal to ${bType}`);
-}
+};
 
 /**
  * Adds quotes to value if it is a string
@@ -118,6 +118,6 @@ function isTypeOf(a, bType) {
  */
 function prepareStringForRequest(value) {
   return typeof value === "string" ? "'" + value + "'" : value;
-}
+};
 
 module.exports = PgColumnObj;

@@ -35,7 +35,7 @@ class PgRequest {
     this.tableName = tableName;
     this._pgConnecter = connecter;
     return this;
-  }
+  };
 
   /**
    * Appends SELECT part to request string in object.
@@ -43,10 +43,10 @@ class PgRequest {
    * @return {PgRequest} this
    */
   select(...values) {
-    values = values.length && ["*"];
+    values = values || ["*"];
     this.reqstring += `SELECT ${values.join(", ")} FROM ${this.tableName} `;
     return this;
-  }
+  };
 
   /**
    * Appends WHERE part to request string in object.
@@ -56,7 +56,7 @@ class PgRequest {
   where(...values) {
     this.reqstring += `WHERE ${values.join(" AND ")}`;
     return this;
-  }
+  };
 
   /**
    * Appends UPDATE part to request string in object.
@@ -67,7 +67,7 @@ class PgRequest {
     this.reqstring +=
       ` UPDATE ${this.tableName} SET ` + reqStringProcceser("update", values);
     return this;
-  }
+  };
 
   /**
    * Appends INSERT part to request string in object.
@@ -78,7 +78,7 @@ class PgRequest {
     this.reqstring +=
       ` INSERT INTO ${this.tableName} ` + reqStringProcceser("insert", values);
     return this;
-  }
+  };
 
   /**
    * Appends DELETE part to request string in object.
@@ -87,7 +87,7 @@ class PgRequest {
   delete() {
     this.reqstring += ` DELETE FROM ${this.tableName} `;
     return this;
-  }
+  };
 
   /**
    * Appends CROSS JOIN part to request string in object.
@@ -98,7 +98,7 @@ class PgRequest {
   crossJoin(joinObj, onCond) {
     this.reqstring += this.#join("CROSS JOIN", joinObj, onCond);
     return this;
-  }
+  };
 
   /**
    * Appends INNER JOIN part to request string in object.
@@ -109,7 +109,7 @@ class PgRequest {
   innerJoin(joinObj, onCond) {
     this.reqstring += this.#join("INNER JOIN", joinObj, onCond);
     return this;
-  }
+  };
 
   /**
    * Appends LEFT JOIN part to request string in object.
@@ -120,7 +120,7 @@ class PgRequest {
   leftJoin(joinObj, onCond) {
     this.reqstring += this.#join("LEFT JOIN", joinObj, onCond);
     return this;
-  }
+  };
 
   /**
    * Appends RIGHT JOIN part to request string in object.
@@ -131,7 +131,7 @@ class PgRequest {
   rightJoin(joinObj, onCond) {
     this.reqstring += this.#join("RIGHT JOIN", joinObj, onCond);
     return this;
-  }
+  };
 
   /**
    * Appends FULL JOIN part to request string in object.
@@ -142,7 +142,7 @@ class PgRequest {
   fullJoin(joinObj, onCond) {
     this.reqstring += this.#join("FULL JOIN", joinObj, onCond);
     return this;
-  }
+  };
 
   /**
    * Appends SELF JOIN part to request string in object.
@@ -153,7 +153,7 @@ class PgRequest {
   selfJoin(joinObj, onCond) {
     this.reqstring += this.#join("SELF JOIN", joinObj, onCond);
     return this;
-  }
+  };
 
   /**
    * Inner function for all joins.
@@ -166,7 +166,7 @@ class PgRequest {
     return ` ${joinType} ${joinObj.tableName} ON ${onCond.map(
       (x) => `${this.tableName}.${x[0]}=${joinObj.tableName}.${x[1]}`
     )} `;
-  }
+  };
 
   /**
    * Appends GROUP BY part to request string in object.
@@ -176,7 +176,7 @@ class PgRequest {
   groupBy(...values) {
     this.reqstring += ` GROUP BY ${values.join(", ")} `;
     return this;
-  }
+  };
 
   /**
    * Appends ORDER BY part to request string in object.
@@ -186,7 +186,7 @@ class PgRequest {
   orderBy(...values) {
     this.reqstring += ` ORDER BY ${values.join(", ")} `;
     return this;
-  }
+  };
 
   /**
    * Appends LIMIT part to request string in object.
@@ -196,7 +196,7 @@ class PgRequest {
   limit(value) {
     this.reqstring += ` LIMIT ${value} `;
     return this;
-  }
+  };
 
   /**
    * Returns request string.
@@ -204,7 +204,7 @@ class PgRequest {
    */
   toStr() {
     return this.reqstring + ";";
-  }
+  };
 
   /**
    * Executes this PgRequest request string.
@@ -213,7 +213,7 @@ class PgRequest {
   async exec() {
     this.reqstring += ";";
     return this._pgConnecter.any(this.reqstring).finally(pgp.end);
-  }
+  };
 }
 
 module.exports = PgRequest;

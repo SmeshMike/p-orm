@@ -1,7 +1,7 @@
 {
-  "name": "porm",
-  "version": "0.0.0",
-  "main": "test.js",
+  "name": "postorm",
+  "version": "0.1.3",
+  "main": "postorm.js",
   "scripts": {
     "start": "node main.js",
     "prepare": "husky install",
@@ -14,5 +14,19 @@
   "devDependencies": {
     "husky": "^7.0.0",
     "pretty-quick": "^3.1.2"
-  }
+  },
+  "description": "Node js ORM for PostgreSQL database.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SmeshMike/postorm.git"
+  },
+  "keywords": [
+    "PostgreSQL",
+    "ORM"
+  ],
+  "author": "smeshmike",
+  "bugs": {
+    "url": "https://github.com/SmeshMike/postorm/issues"
+  },
+  "homepage": "https://github.com/SmeshMike/postorm#readme"
 }

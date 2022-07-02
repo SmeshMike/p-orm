@@ -1,4 +1,4 @@
-# porm
+# postorm
 
 Node js ORM for PostgreSQL database. The whole perpose of that package is to make sql requests easier to write with JS,
 to create "SELECT someStaff FROM staffWareHouse" by writing
@@ -14,7 +14,7 @@ etc.
 So what do we have?
 
 ```js
-{PgObj, compileModelsByScripts, PgUtils} = require("porm")
+{ PgObj, compileModelsByScripts, PgUtils, PgGlob } = require("postorm")
 ```
 
 Lets understand what is that and how it works.
@@ -26,16 +26,16 @@ PgObj is a class that implements table object. To create it you will need a name
 now we don't have implementation of DB interfaces, so we use [pg-promise](https://github.com/vitaly-t/pg-promise). Btw, thanx to it's author.
 
 ```js
-  let pgconnection = {
-    host: "localhost",
-    user: "postgres",
-    database: "BotDb",
-    password: "123",
-    port: 5432,
-    connectionTimeoutMillis: 20000,
-  };
+let pgconnection = {
+  host: "localhost",
+  user: "postgres",
+  database: "BotDb",
+  password: "123",
+  port: 5432,
+  connectionTimeoutMillis: 20000,
+};
 
-  const db = pgp(pgconnection);
+const db = pgp(pgconnection);
 tableObj = new PgObj("table", db, tableModel);
 ```
 
@@ -80,7 +80,7 @@ yourScriptModel = models["user"];
 Using this modules you can make things easily
 
 ```js
- { PgObj, compileModelsByScripts, PgUtils} = require("porm")
+ { PgObj, compileModelsByScripts, PgUtils} = require("postorm")
 
  models = compileModelsByScripts('./scripts')
 
@@ -107,5 +107,30 @@ Users.select(PgUtils.count("another_id")).where(Users.eyes_nubmer.eq(2)).exec();
 //executes this request
 ```
 
-To see more functions check PgUtils file. Good luck!
-And you can see an [example](https://github.com/SmeshMike/porm/wiki#here-you-can-check-example-how-to-use-package)
+### PgGlob
+
+PgGlob is a class to create nested request such as "select from select"
+
+```js
+Glob = new PgGlob(db);
+
+Glob.select()
+  .from(
+    Users.select(PgUtils.count(PgUtils.distinct(Users.user_id)))
+      .fullJoin(Requests, ["user_id", "user_id"])
+      .limit(1)
+  )
+  .toStr();
+//returns: SELECT  FROM (SELECT COUNT(DISTINCT users.user_id )  FROM users  FULL JOIN requests ON users.user_id=requests.user_id  LIMIT 1 ) t1 ;
+Glob.select()
+  .from(
+    Users.select(PgUtils.count(PgUtils.distinct(Users.user_id)))
+      .fullJoin(Requests, ["user_id", "user_id"])
+      .limit(1)
+  )
+  .exec();
+//executes this request
+```
+
+To find more functions check PgUtils file. Good luck!
+And you check an [example](https://github.com/SmeshMike/postorm/wiki#here-you-can-check-example-how-to-use-package)
