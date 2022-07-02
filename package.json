@@ -1,6 +1,6 @@
 {
   "name": "postorm",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "main": "postorm.js",
   "scripts": {
     "start": "node main.js",
@@ -21,7 +21,7 @@
     "url": "git+https://github.com/SmeshMike/postorm.git"
   },
   "keywords": [
-    "PostgerSQL",
+    "PostgreSQL",
     "ORM"
   ],
   "author": "smeshmike",
