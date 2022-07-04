@@ -14,7 +14,7 @@ etc.
 So what do we have?
 
 ```js
-{ PgObj, compileModelsByScripts, PgUtils, PgGlob } = require("postorm")
+const { PgObj, compileModelsByScripts, PgUtils, PgGlob } = require("postorm")
 ```
 
 Lets understand what is that and how it works.
@@ -68,11 +68,11 @@ CREATE TABLE IF NOT EXISTS public.user
 than if you write
 
 ```js
-models = compileModelsByScripts("./scripts");
+let models = compileModelsByScripts("./scripts");
 
 //model - {user : {model}}
 
-yourScriptModel = models["user"];
+let yourScriptModel = models["user"];
 
 //yourScriptModel - {another_id: null, creationScript: theWholeScriptText, eyes_nubmer:2, mode:'unauthorized'}
 ```
@@ -80,9 +80,9 @@ yourScriptModel = models["user"];
 Using this modules you can make things easily
 
 ```js
- { PgObj, compileModelsByScripts, PgUtils} = require("postorm")
+ const { PgObj, compileModelsByScripts, PgUtils} = require("postorm")
 
- models = compileModelsByScripts('./scripts')
+ let models = compileModelsByScripts('./scripts')
 
  const connectionStr = 'postgres://john:pass123@localhost:5432/products'
  const db = pgp(connectionStr);
@@ -90,7 +90,7 @@ Using this modules you can make things easily
  let userModel = models['user']
 
 
- User = new PgObj('user', db, userModel)
+ let User = new PgObj('user', db, userModel)
 ```
 
 ### PgUtils
@@ -112,7 +112,7 @@ Users.select(PgUtils.count("another_id")).where(Users.eyes_nubmer.eq(2)).exec();
 PgGlob is a class to create nested request such as "select from select"
 
 ```js
-Glob = new PgGlob(db);
+let Glob = new PgGlob(db);
 
 Glob.select()
   .from(

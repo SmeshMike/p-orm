@@ -1,6 +1,6 @@
 {
   "name": "postorm",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "main": "postorm.js",
   "scripts": {
     "start": "node main.js",
@@ -22,7 +22,11 @@
   },
   "keywords": [
     "PostgreSQL",
-    "ORM"
+    "ORM",
+    "pg",
+    "SQL",
+    "postgres",
+    "postgre"
   ],
   "author": "smeshmike",
   "bugs": {

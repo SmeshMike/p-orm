@@ -45,7 +45,7 @@ let Requests = new PgObj("requests", db, requests);
 Finally, I create request to my DB and execute it. Response recieves as Array[Object]
 
 ```js
-const { PgGlob, compileModelsByScripts, PgUtils } = require("postorm");
+const { PgObj, PgGlob, compileModelsByScripts, PgUtils } = require("postorm");
 const pgp = require("pg-promise")();
 
 async function main() {
